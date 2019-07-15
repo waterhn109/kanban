@@ -1,5 +1,6 @@
 package com.cy.kanban;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebView;
 import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
@@ -46,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
      //   FloatingActionButton fab = findViewById(R.id.fab);
 
+       openurl();
+
+
     }
 
     @Override
@@ -74,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed(){
 
         finish();
+        closeContextMenu();
     }
 
     /**
@@ -86,5 +92,13 @@ public class MainActivity extends AppCompatActivity {
     //            "H", margin, color_black, color_white, logoBitmap, 0.2F, blackBitmap);
         iv_qrcode.setImageBitmap(qrcode_bitmap);
     }
+
+    public void openurl(){
+        Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
+        intent.putExtra("mac", mac);
+        startActivity(intent);
+        finish();
+    }
+
 
 }
