@@ -2,28 +2,70 @@ package com.cy.kanban;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.StrictMode;
 import android.text.method.ScrollingMovementMethod;
+import android.view.LayoutInflater;
 import android.view.Window;
 import android.webkit.WebView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class WebViewActivity  extends Activity {
 
+  public  String mac ;
+  public  WebView  webview;
+  public List<String> urls = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        WebView  webview = new WebView(this);
+         webview = new WebView(this);
         //设置WebView属性，能够执行Javascript脚本
         webview.getSettings().setJavaScriptEnabled(true);
+        //修改系统策略，放开所有的权限
+        //代码添加到onCreate回调方法中即可
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        //创建属于主线程的handler
+       // handler =new Handler();
+
         //加载需要显示的网页
         //webview.loadUrl("file:///android_asset/index.html");//显示本地网页
         //显示远程网页
-        webview.loadUrl("http://192.168.100.133:18888/WebReport/decision/view/form?viewlet=ZMT/SFC/F-KB-SFC-3.frm&plant=KYN&jihuahao=RW01-19061903&riqi=2019/06/26&gongdanhao=NGMB-19060368&banzu=N01TP10DA");
+        Intent intent=getIntent();
+        mac = intent.getStringExtra("mac");
+       // new ReloadWebView(this, 1, webview,mac);
+       // bgrun();
+        urls = getUlrs.getulrs(mac);
+        if (!urls.isEmpty()) {
+
+
+                        webview.loadUrl(urls.get(0));
+                        //设置Web视图
+                        setContentView(webview);
+                        webview.reload();
+
+
+        }
+
+       // webview.loadUrl(url);
         //设置Web视图
-        setContentView(webview);
+      //  setContentView(webview);
 
       //  setContentView(R.layout.web_main);
         // 初始化各控件
@@ -33,13 +75,50 @@ public class WebViewActivity  extends Activity {
 
 
     }
+    public  void bgrun() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            public void run() {
+                //获取mac地址的urls
+                urls = getUlrs.getulrs(mac);
+                if (!urls.isEmpty()) {
+                    while (true) {
+                        for (int i=0;i<urls.size();i++) {
+                            try {
+                                webview.loadUrl(urls.get(i));
+                                //设置Web视图
+                                setContentView(webview);
+                                webview.reload();
 
+                                /*try {
+                                    Thread.sleep(10000);
+                                } catch (Exception e) {
+                                }*/
+                            }
+                            catch (Exception e)
+                            {
+                               System.out.println(e.toString());
+                            }
+                            if(i == urls.size())
+                            {
+                                i =0;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    onBackPressed();
+                }
+            }
+        }, 2000,3600000);// 设定指定的时间time,此处为60min
+    }
 
     @Override
     public void onBackPressed(){
-    //    Intent intent = new Intent(this, MainActivity.class);
-    //    intent.putExtra("from_guaci", true);
-    //    startActivity(intent);
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("back", true);
+        startActivity(intent);
         finish();
     }
 }

@@ -13,27 +13,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
 
     private ImageView iv_qrcode;
-    private ImageView picture_logo, picture_black;//logo，代替黑色色块的图片
-
-    private String barcode;//二维码内容
-    private int width, height;//宽度，高度
-    private String error_correction_level, margin;//容错率，空白边距
-    private int color_black, color_white;//黑色色块，白色色块
-
-    public static final int TAKE_PHOTO = 1;//拍照
-    public static final int CHOOSE_PHOTO = 2;//从相册选择图片
-    private Uri imageUri;
-    private Bitmap logoBitmap;//logo图片
-    private Bitmap blackBitmap;//代替黑色色块的图片
-    private int remark;//标记返回的是logo还是代替黑色色块图片
-
     private android.graphics.Bitmap qrcode_bitmap;//生成的二维码
-    private String mac ;
+    private String  mac  ;
+    //获取到的ulr组
+    private List<String> urls = new ArrayList<>();
 
 
     @Override
@@ -43,12 +37,23 @@ public class MainActivity extends AppCompatActivity {
         iv_qrcode = findViewById(R.id.iv_qrcode);
         mac = getMac.getMac(this);
         generateQrcodeAndDisplay(mac);
-      //  Toolbar toolbar = findViewById(R.id.toolbar);
-     //   setSupportActionBar(toolbar);
+        Toast.makeText(this, "正在连接看板服务器...", Toast.LENGTH_SHORT).show();
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                urls = getUlrs.getulrs(mac);
+                if(!urls.isEmpty()) {
+                    Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
+                    intent.putExtra("mac", mac);
+                    startActivity(intent);
+                    finish();
+                }
 
-     //   FloatingActionButton fab = findViewById(R.id.fab);
+            }
+        }).start();
 
-       openurl();
+
+      //  bgrun();
 
 
     }
@@ -86,19 +91,12 @@ public class MainActivity extends AppCompatActivity {
      * 生成二维码并显示
      */
     private void generateQrcodeAndDisplay(String mac) {
-        barcode = mac;
+
         qrcode_bitmap = ZXingUtils.createQRImage(mac, 400,  400);
-    //    qrcode_bitmap = QRCodeUtil.createQRCodeBitmap(barcode, 650, 650, "UTF-8",
-    //            "H", margin, color_black, color_white, logoBitmap, 0.2F, blackBitmap);
         iv_qrcode.setImageBitmap(qrcode_bitmap);
     }
 
-    public void openurl(){
-        Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
-        intent.putExtra("mac", mac);
-        startActivity(intent);
-        finish();
-    }
+
 
 
 }
