@@ -11,6 +11,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Window;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ public class WebViewActivity  extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
          webview = new WebView(this);
+
         //设置WebView属性，能够执行Javascript脚本
         webview.getSettings().setJavaScriptEnabled(true);
         //修改系统策略，放开所有的权限
@@ -41,6 +43,14 @@ public class WebViewActivity  extends Activity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+        webview.setWebViewClient(new WebViewClient(){
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+        });
+
         //创建属于主线程的handler
        // handler =new Handler();
 
@@ -55,14 +65,32 @@ public class WebViewActivity  extends Activity {
         if (!urls.isEmpty()) {
 
 
-                        webview.loadUrl(urls.get(0));
-                        //设置Web视图
-                        setContentView(webview);
+            webview.loadUrl(urls.get(0));
+            //设置Web视图
+            setContentView(webview);
+            webview.reload();
+
+
+            Runnable runnable = new Runnable() {
+                public void run() {
+                    while (true) {
                         webview.reload();
-
-
+                        try {
+                            Thread.sleep(1800000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            };
         }
 
+       /* Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            public void run() {
+                webview.reload();
+            }
+        }, 2000,20000);// 设定指定的时间time,此处为60min*/
        // webview.loadUrl(url);
         //设置Web视图
       //  setContentView(webview);
@@ -75,44 +103,8 @@ public class WebViewActivity  extends Activity {
 
 
     }
-    public  void bgrun() {
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            public void run() {
-                //获取mac地址的urls
-                urls = getUlrs.getulrs(mac);
-                if (!urls.isEmpty()) {
-                    while (true) {
-                        for (int i=0;i<urls.size();i++) {
-                            try {
-                                webview.loadUrl(urls.get(i));
-                                //设置Web视图
-                                setContentView(webview);
-                                webview.reload();
 
-                                /*try {
-                                    Thread.sleep(10000);
-                                } catch (Exception e) {
-                                }*/
-                            }
-                            catch (Exception e)
-                            {
-                               System.out.println(e.toString());
-                            }
-                            if(i == urls.size())
-                            {
-                                i =0;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    onBackPressed();
-                }
-            }
-        }, 2000,3600000);// 设定指定的时间time,此处为60min
-    }
+
 
     @Override
     public void onBackPressed(){
