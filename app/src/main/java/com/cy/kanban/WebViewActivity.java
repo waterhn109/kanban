@@ -68,10 +68,10 @@ public class WebViewActivity  extends Activity {
             webview.loadUrl(urls.get(0));
             //设置Web视图
             setContentView(webview);
-            webview.reload();
+            //    webview.reload();
 
-
-            Runnable runnable = new Runnable() {
+        }
+           /* Runnable runnable = new Runnable() {
                 public void run() {
                     while (true) {
                         webview.reload();
@@ -82,26 +82,7 @@ public class WebViewActivity  extends Activity {
                         }
                     }
                 }
-            };
-        }
-
-       /* Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            public void run() {
-                webview.reload();
-            }
-        }, 2000,20000);// 设定指定的时间time,此处为60min*/
-       // webview.loadUrl(url);
-        //设置Web视图
-      //  setContentView(webview);
-
-      //  setContentView(R.layout.web_main);
-        // 初始化各控件
-     //   WebView webView= (WebView) findViewById(R.id.webView);
-
-     //   webView.loadUrl("http://www.baidu.com");
-
-
+            };*/
     }
 
 
