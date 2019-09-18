@@ -31,6 +31,8 @@
         <activity android:name="com.cy.kanban.WebViewActivity"
             android:screenOrientation="landscape"
             ></activity>
+        <!-- 后台服务-长连接 -->
+        <service android:name="com.cy.kanban.BackService" />
     </application>
 
 </manifest>

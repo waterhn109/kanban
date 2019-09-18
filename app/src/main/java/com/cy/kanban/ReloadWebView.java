@@ -41,7 +41,7 @@ public class ReloadWebView extends TimerTask {
         /* execute the first task after seconds */
         timer.schedule(this,
                 seconds * 2000,  // initial delay
-                seconds * 25000); // subsequent rate
+                seconds * 1800000); // subsequent rate
 
         /* if you want to execute the first task immediatly */
         /*
@@ -86,7 +86,7 @@ public class ReloadWebView extends TimerTask {
                       //  context.setContentView(wv);
                       //  wv.reload();
                 try {
-                    Thread.sleep(10000);
+                    Thread.sleep(1800000);
                 } catch (Exception e) {
                     System.out.println(e.toString());
                 }

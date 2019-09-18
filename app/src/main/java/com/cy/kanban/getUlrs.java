@@ -13,7 +13,7 @@ public class getUlrs {
 
         // MySQL 8.0 以下版本 - JDBC 驱动名及数据库 URL
         static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-        static final String DB_URL = "jdbc:mysql://192.168.1.2:3306/app";
+        static final String DB_URL = "jdbc:mysql://192.168.100.75:3306/app";
 
         // MySQL 8.0 以上版本 - JDBC 驱动名及数据库 URL
         //static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -24,8 +24,8 @@ public class getUlrs {
         static final String USER = "root";
         static final String PASS = "ibixin@123";
 
-        public static List<String> getulrs(String mac) {
-            List<String> ulrs = new ArrayList<>();
+        public static ArrayList<String> getulrs(String mac) {
+            ArrayList<String> ulrs = new ArrayList<>();
             Connection conn = null;
             Statement stmt = null;
             String content ="";
@@ -78,7 +78,7 @@ public class getUlrs {
             return  ulrs;
         }
 
-    public static List<String> Str2Json(String content) throws JSONException {
+    public static ArrayList<String> Str2Json(String content) throws JSONException {
         String jsonString="{\n" +
                 "\t\"urlarr\":[\n" +
                 "\t\t{\n" +
@@ -88,7 +88,7 @@ public class getUlrs {
                 "}";
         JSONObject json= new JSONObject(content);
         JSONArray jsonArray=json.getJSONArray("urlarr");
-        List<String> ulrs = new ArrayList<>();
+        ArrayList<String> ulrs = new ArrayList<>();
         for(int i=0;i<jsonArray.length();i++){
             JSONObject user=(JSONObject) jsonArray.get(i);
             String url=(String) user.get("url");

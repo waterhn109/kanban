@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private android.graphics.Bitmap qrcode_bitmap;//生成的二维码
     private String  mac  ;
     //获取到的ulr组
-    private List<String> urls = new ArrayList<>();
+    private ArrayList<String> urls = new ArrayList<>();
 
 
     @Override
@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 if(!urls.isEmpty()) {
                     Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
                     intent.putExtra("mac", mac);
+                    intent.putExtra("urls", urls);
                     startActivity(intent);
                     finish();
                 }

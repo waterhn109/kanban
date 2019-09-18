@@ -2,30 +2,18 @@ package com.cy.kanban;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.os.StrictMode;
-import android.text.method.ScrollingMovementMethod;
-import android.view.LayoutInflater;
 import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 public class WebViewActivity  extends Activity {
 
   public  String mac ;
   public  WebView  webview;
-  public List<String> urls = new ArrayList<>();
+  public ArrayList<String> urls = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +49,8 @@ public class WebViewActivity  extends Activity {
         mac = intent.getStringExtra("mac");
        // new ReloadWebView(this, 1, webview,mac);
        // bgrun();
-        urls = getUlrs.getulrs(mac);
+        urls = intent.getStringArrayListExtra("urls");
         if (!urls.isEmpty()) {
-
-
             webview.loadUrl(urls.get(0));
             //设置Web视图
             setContentView(webview);
