@@ -13,7 +13,7 @@ public class getUlrs {
 
         // MySQL 8.0 以下版本 - JDBC 驱动名及数据库 URL
         static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-        static final String DB_URL = "jdbc:mysql://192.168.100.75:3306/app";
+        static final String DB_URL = "jdbc:mysql://192.168.2.19:3306/app";
 
         // MySQL 8.0 以上版本 - JDBC 驱动名及数据库 URL
         //static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -82,7 +82,7 @@ public class getUlrs {
         String jsonString="{\n" +
                 "\t\"urlarr\":[\n" +
                 "\t\t{\n" +
-                "\t\t\t\"url\":\"http://192.168.100.133:18888/WebReport/decision/view/form?viewlet=ZMT/SFC/F-KB-SFC-4.frm&plant=KYN&gongduan=LSP6BZ\"\n" +
+                "\t\t\t\"url\":\"http://192.168.2.18:8080/WebReport/ReportServer?formlet=ZMT/WH/F-KB-WH-1.frm&plant=suzhou&cangku=2120&riqi=2020/06/11\"\n" +
                 "\t\t}\n" +
                 "\t]\n" +
                 "}";
